@@ -1,48 +1,63 @@
-import { useParams } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/Tabs'
-import { ProfileView } from './ProfileView'
+import { useState } from 'react'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/ui/Card'
+import { Button } from '../../components/ui/Button'
+import { useProfilesStore } from '../../store/profile'
 import { EditProfileForm } from './EditProfileForm'
 import { PhotoManager } from './PhotoManager'
-import { FamilyDetailsView } from '../family/FamilyDetailsView'
-import { PartnerPreferencesView } from '../preferences/PartnerPreferencesView'
+import { ProfileView } from './ProfileView'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/Tabs'
 
 export default function ProfileEditor() {
-  const { profileId } = useParams<{ profileId: string }>()
-  const { t } = useTranslation()
-  const isOwnProfile = profileId === 'me'
+  const { user } = useProfilesStore()
+  const [activeTab, setActiveTab] = useState('view')
+
+  if (!user) {
+    return (
+      <div className="p-8">
+        <Card>
+          <CardContent className="pt-6">
+            <p>Please log in to view your profile.</p>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
 
   return (
-    <div className="space-y-6 p-4 md:p-6 max-w-screen-lg mx-auto">
-      <Tabs defaultValue="view" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="view">View Profile</TabsTrigger>
-          <TabsTrigger value="edit">Edit Profile</TabsTrigger>
-          <TabsTrigger value="photos">Photos</TabsTrigger>
-          <TabsTrigger value="preferences">Preferences</TabsTrigger>
-        </TabsList>
+    <div className="p-4 max-w-4xl mx-auto">
+      <Card>
+        <CardHeader>
+          <CardTitle>Profile Settings</CardTitle>
+          <CardDescription>View and edit your matrimony profile</CardDescription>
+        </CardHeader>
         
-        <TabsContent value="view">
-          <ProfileView profileId={profileId || 'me'} isOwnProfile={isOwnProfile} />
-        </TabsContent>
-        
-        <TabsContent value="edit">
-          {isOwnProfile && <EditProfileForm />}
-        </TabsContent>
-        
-        <TabsContent value="photos">
-          {isOwnProfile && <PhotoManager />}
-        </TabsContent>
-        
-        <TabsContent value="preferences">
-          {isOwnProfile && <PartnerPreferencesView />}
-        </TabsContent>
-      </Tabs>
+        <CardContent>
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="view">View Profile</TabsTrigger>
+              <TabsTrigger value="photos">Photos</TabsTrigger>
+              <TabsTrigger value="edit">Edit Info</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="view">
+              <ProfileView />
+            </TabsContent>
+            
+            <TabsContent value="photos">
+              <PhotoManager 
+                photos={user.photos}
+                onPhotosChange={(photos) => {
+                  console.log('Photos updated:', photos)
+                }}
+              />
+            </TabsContent>
+            
+            <TabsContent value="edit">
+              <EditProfileForm />
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
     </div>
   )
 }
-
-import { useProfileStore } from '../../store/profile'
-import { useAuthStore } from '../../store/auth'
-import { getProfileById } from '../../data/profiles'
