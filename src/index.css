@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 255 249 243;
+  --foreground: 42 26 31;
+  --primary: 122 31 61;
+  --accent: 224 82 122;
+  --gold: 201 162 75;
+  --success: 46 139 87;
+  --danger: 214 69 69;
+  --card: 255 255 255;
+  --card-foreground: 42 26 31;
+}
+
+.dark {
+  --background: 26 23 27;
+  --foreground: 248 243 243;
+  --primary: 122 31 61;
+  --accent: 224 82 122;
+  --gold: 201 162 75;
+  --success: 65 184 127;
+  --danger: 230 115 115;
+  --card: 38 35 41;
+  --card-foreground: 248 243 243;
+}
+
+@layer base {
+  * {
+    @apply border-foreground/5;
+  }
+  body {
+    @apply bg-background text-foregroundantialiased;
+  }
+}
+
+/* Responsive typography */
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+  p, span, div {
+    @apply font-body;
+  }
+}

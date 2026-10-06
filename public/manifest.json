@@ -1,0 +1,28 @@
+{
+  "name": "Jodi - Matrimony Platform",
+  "short_name": "Jodi",
+  "description": "100% Free Matrimony Platform - Find your perfect match",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFF9F3",
+  "theme_color": "#7A1F3D",
+  "icons": [
+    {
+      "src": "/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["Lifestyle", "Social", "Shopping"],
+  "lang": "en"
+}
